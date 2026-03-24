@@ -19,7 +19,7 @@
 
 ### User Story 1 - Hover to Look Up a Chinese Character (Priority: P1)
 
-A user is reading a note containing Chinese text. They hover their cursor over a Chinese character they don't recognize. The plugin detects the character under the cursor, looks it up in the bundled CC-CEDICT dictionary, and displays a popup showing the character (both Traditional and Simplified forms), pinyin pronunciation, and all matching dictionary translations.
+A user is reading a note containing Chinese text. They hover their cursor over a Chinese character they don't recognize. The plugin detects the character under the cursor, looks it up in the bundled CC-CEDICT dictionary, and displays a popup showing on a single line: the Simplified form, Traditional form (if different), and pinyin pronunciation, followed by all matching dictionary translations.
 
 **Why this priority**: This is the core feature of the plugin — without hover-based dictionary lookup, the plugin has no value.
 
@@ -27,8 +27,8 @@ A user is reading a note containing Chinese text. They hover their cursor over a
 
 **Acceptance Scenarios**:
 
-1. **Given** a note contains the character "学", **When** the user hovers over it, **Then** a popup appears showing: Traditional form (學), Simplified form (学), pinyin (xué), and all CC-CEDICT translation entries.
-2. **Given** a note contains the character "國", **When** the user hovers over it, **Then** the popup shows both Traditional (國) and Simplified (国) forms with all translations.
+1. **Given** a note contains the character "学", **When** the user hovers over it, **Then** a popup appears showing on a single line: Simplified form (学), Traditional form (學), and pinyin (xué), followed by all CC-CEDICT translation entries.
+2. **Given** a note contains the character "國", **When** the user hovers over it, **Then** the popup shows on a single line: Simplified (国), Traditional (國), and pinyin, with all translations.
 3. **Given** the user hovers over a non-Chinese character (e.g., "A" or "5"), **When** the hover event fires, **Then** no popup is displayed.
 4. **Given** the user hovers over a Chinese character, **When** the popup appears, **Then** the character under the cursor is visually highlighted (selected).
 5. **Given** the device has no internet connection, **When** the user hovers over a Chinese character, **Then** the lookup still works using the bundled offline dictionary.
@@ -81,6 +81,8 @@ A user wants to customize what information appears in the popup (e.g., hide piny
 2. **Given** the user disables "Show Traditional Characters" in settings, **When** a popup appears, **Then** only Simplified characters are shown.
 3. **Given** the user modifies popup style settings (e.g., font size), **When** a popup appears, **Then** the popup reflects the custom style.
 4. **Given** the user switches Obsidian themes, **When** a dictionary popup appears, **Then** the popup styling adapts to match the current theme.
+5. **Given** the user enables "Tone-Colored Pinyin" in settings (default), **When** a dictionary popup appears, **Then** each pinyin syllable is colored according to its tone (Tone 1 red, Tone 2 orange, Tone 3 green, Tone 4 blue, Tone 5 gray).
+6. **Given** the user disables "Tone-Colored Pinyin" in settings, **When** a dictionary popup appears, **Then** pinyin is displayed in the default muted text color without tone coloring.
 
 ---
 
@@ -99,7 +101,7 @@ A user wants to customize what information appears in the popup (e.g., hide piny
 - **FR-001**: System MUST perform dictionary lookups entirely offline using a bundled CC-CEDICT dictionary file.
 - **FR-002**: System MUST detect Chinese characters (CJK Unified Ideographs) at the current cursor/hover position.
 - **FR-003**: System MUST support lookup of both Traditional and Simplified Chinese characters, resolving entries regardless of which form appears in the note.
-- **FR-004**: System MUST display a popup containing: character(s) (Traditional and Simplified forms), pinyin with tone marks, and all matching translation entries from the dictionary.
+- **FR-004**: System MUST display a popup containing: a single line with Simplified form, Traditional form (if different from Simplified), and pinyin with tone marks (in that order), followed by all matching translation entries from the dictionary.
 - **FR-005**: System MUST visually highlight (select) the character or word being looked up when the popup is displayed.
 - **FR-006**: System MUST NOT display a popup when the cursor is over a non-Chinese character (Latin letters, numbers, punctuation, Chinese punctuation, whitespace).
 - **FR-007**: System MUST support a "hover" trigger mode (default) where hovering over a character triggers lookup.
@@ -115,12 +117,14 @@ A user wants to customize what information appears in the popup (e.g., hide piny
 - **FR-013**: System MUST allow users to configure popup style overrides (e.g., font size) via plugin settings.
 - **FR-014**: System MUST handle missing or corrupted dictionary files gracefully by showing an error notification without crashing.
 - **FR-015**: System MUST parse and index the CC-CEDICT dictionary at plugin load time for fast lookups.
+- **FR-020**: System MUST support tone-colored pinyin display, where each pinyin syllable is colored according to its tone using the Pleco standard color scheme: Tone 1 red (`#e30000`), Tone 2 orange (`#e68a00`), Tone 3 green (`#00802b`), Tone 4 blue (`#1510f0`), Tone 5/neutral gray (`#808080`).
+- **FR-021**: System MUST allow users to enable or disable tone-colored pinyin via a toggle in plugin settings. Default: enabled.
 
 ### Key Entities
 
 - **Dictionary Entry**: Represents a single CC-CEDICT record containing Traditional form, Simplified form, pinyin, and one or more English definitions.
 - **Lookup Result**: The resolved dictionary entry (or entries) matching the character(s) at the cursor position, including both single-character and compound word matches.
-- **Plugin Settings**: User-configurable preferences including trigger mode (hover/manual), visible popup fields, and style overrides.
+- **Plugin Settings**: User-configurable preferences including trigger mode (hover/manual), visible popup fields, tone-colored pinyin toggle, and style overrides.
 
 ## Success Criteria *(mandatory)*
 
@@ -131,7 +135,7 @@ A user wants to customize what information appears in the popup (e.g., hide piny
 - **SC-003**: 100% of CC-CEDICT entries are searchable by both Traditional and Simplified character forms.
 - **SC-004**: Users can switch between hover and manual selection modes without restarting Obsidian — via either settings UI or command palette commands.
 - **SC-005**: The popup is visually consistent with the active Obsidian theme (inherits theme colors and fonts).
-- **SC-006**: Users can customize popup content (toggle fields on/off) and see changes reflected immediately on the next lookup.
+- **SC-006**: Users can customize popup content (toggle fields on/off, enable/disable tone-colored pinyin) and see changes reflected immediately on the next lookup.
 
 ## Assumptions
 

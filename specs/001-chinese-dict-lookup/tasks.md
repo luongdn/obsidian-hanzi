@@ -67,7 +67,7 @@
 
 ### Implementation for User Story 1
 
-- [X] T020 [US1] Implement popup DOM rendering in src/ui/popup.ts — create popup element with Traditional/Simplified forms, pinyin row, definitions list; use Obsidian CSS variables; respect all `PluginSettings` display toggles (showTraditional, showSimplified, showPinyin, showDefinitions) and popupFontSize per R-006
+- [X] T020 [US1] Implement popup DOM rendering in src/ui/popup.ts — create popup element with Simplified form, Traditional form, and pinyin on a single line (in that order), followed by definitions list; use Obsidian CSS variables; respect all `PluginSettings` display toggles (showTraditional, showSimplified, showPinyin, showDefinitions) and popupFontSize per R-006
 - [X] T021 [US1] Implement character highlight decoration in src/ui/highlight.ts — CM6 `StateField<DecorationSet>` with `StateEffect` for set/clear, `Decoration.mark` with `.hanzi-highlight` CSS class per R-011; cover full matched word range for multi-char matches
 - [X] T022 [US1] Implement CM6 hover tooltip extension in src/editor/hover-extension.ts — `hoverTooltip()` handler: read char at pos, check `isCJK()`, extract up to `maxLookAhead` chars ahead, call engine `lookup()`, return `Tooltip` with popup DOM; integrate highlight set/clear per R-004
 - [X] T023 [US1] Implement reading mode delegated listener in src/editor/reading-mode.ts — single `mouseover` on `.markdown-reading-view`, `caretRangeFromPoint` to find char, CJK check, lookup, show popup as absolutely positioned DOM element, dismiss on `mouseleave`/`click` outside, temporary `<span class="hanzi-highlight">` wrapper per R-004
@@ -120,9 +120,12 @@
 
 ### Implementation for User Story 4
 
-- [X] T031 [US4] Implement full settings tab UI in src/settings.ts — `HanziSettingTab.display()` with Obsidian `Setting` components: dropdown for triggerMode, toggles for showTraditional/showSimplified/showPinyin/showDefinitions, slider or input for popupFontSize (clamped 8-32), input for maxLookAhead (clamped 1-12)
+- [X] T031 [US4] Implement full settings tab UI in src/settings.ts — `HanziSettingTab.display()` with Obsidian `Setting` components: dropdown for triggerMode, toggles for showTraditional/showSimplified/showPinyin/showDefinitions/toneColoredPinyin, slider or input for popupFontSize (clamped 8-32), input for maxLookAhead (clamped 1-12)
 - [X] T032 [US4] Wire settings changes to live popup behavior in src/main.ts — on settings save, update active extensions so next lookup uses new display toggles and font size without restart (SC-004, SC-006)
 - [X] T033 [US4] Validate theme-aware styling in styles.css — ensure all popup elements use CSS variables, test with light/dark themes, add `--font-text` and `--font-ui-small` usage for popup typography per R-006
+- [X] T040 [US4] Implement tone-colored pinyin in src/ui/popup.ts — when `settings.toneColoredPinyin` is true, render each pinyin syllable as a separate `<span>` with inline color based on its tone number using the Pleco color scheme: Tone 1 `#e30000` (red), Tone 2 `#e68a00` (orange), Tone 3 `#00802b` (green), Tone 4 `#1510f0` (blue), Tone 5 `#808080` (gray). Use `pinyinRaw` from `DictionaryEntry` to determine tone numbers. When disabled, render pinyin as a single span with default `--text-muted` color (FR-020, FR-021)
+- [X] T041 [US4] Add `toneColoredPinyin` toggle to settings tab in src/settings.ts — add a toggle in `HanziSettingTab.display()` for "Tone-Colored Pinyin" (default: true) with description "Color pinyin syllables by tone (Pleco color scheme)" (FR-021)
+- [X] T042 [P] [US4] Add CSS classes for tone-colored pinyin in styles.css — `.hanzi-tone-1` through `.hanzi-tone-5` with corresponding colors, used as fallback/override classes alongside inline styles
 
 **Checkpoint**: All settings functional — popup content and style fully configurable, theme-aware
 

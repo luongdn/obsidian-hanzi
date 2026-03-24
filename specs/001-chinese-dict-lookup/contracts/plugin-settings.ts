@@ -23,6 +23,9 @@ export interface HanziPluginSettings {
   /** Show English definitions in popup. Default: true */
   showDefinitions: boolean;
 
+  /** Color pinyin syllables by tone using Pleco scheme. Default: true */
+  toneColoredPinyin: boolean;
+
   /** Font size (px) for popup content. Range: [8, 32]. Default: 14 */
   popupFontSize: number;
 
@@ -36,6 +39,7 @@ export const DEFAULT_SETTINGS: HanziPluginSettings = {
   showSimplified: true,
   showPinyin: true,
   showDefinitions: true,
+  toneColoredPinyin: true,
   popupFontSize: 12,
   maxLookAhead: 8,
 };

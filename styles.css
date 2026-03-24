@@ -12,7 +12,7 @@
 
 .hanzi-popup-chars {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   margin-bottom: 4px;
 }
 
@@ -27,9 +27,8 @@
 }
 
 .hanzi-popup-pinyin {
+  font-size: 1.4em;
   color: var(--text-muted);
-  font-size: var(--font-ui-small);
-  margin-bottom: 6px;
 }
 
 .hanzi-popup-definitions {
@@ -48,6 +47,12 @@
   content: '• ';
   color: var(--text-muted);
 }
+
+.hanzi-tone-1 { color: #e03030; }
+.hanzi-tone-2 { color: #e68a00; }
+.hanzi-tone-3 { color: #00802b; }
+.hanzi-tone-4 { color: #4b6ddf; }
+.hanzi-tone-5 { color: #808080; }
 
 .hanzi-highlight {
   background-color: var(--text-highlight-bg);

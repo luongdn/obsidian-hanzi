@@ -9,6 +9,7 @@ export interface HanziPluginSettings {
   showSimplified: boolean;
   showPinyin: boolean;
   showDefinitions: boolean;
+  toneColoredPinyin: boolean;
   popupFontSize: number;
   maxLookAhead: number;
 }
@@ -19,6 +20,7 @@ export const DEFAULT_SETTINGS: HanziPluginSettings = {
   showSimplified: true,
   showPinyin: true,
   showDefinitions: true,
+  toneColoredPinyin: true,
   popupFontSize: 12,
   maxLookAhead: 8,
 };
@@ -89,6 +91,18 @@ export class HanziSettingTab extends PluginSettingTab {
           .setValue(this.plugin.settings.showDefinitions)
           .onChange(async (value) => {
             this.plugin.settings.showDefinitions = value;
+            await this.plugin.saveSettings();
+          })
+      );
+
+    new Setting(containerEl)
+      .setName('Tone-colored pinyin')
+      .setDesc('Color pinyin syllables by tone (Pleco color scheme)')
+      .addToggle((toggle) =>
+        toggle
+          .setValue(this.plugin.settings.toneColoredPinyin)
+          .onChange(async (value) => {
+            this.plugin.settings.toneColoredPinyin = value;
             await this.plugin.saveSettings();
           })
       );

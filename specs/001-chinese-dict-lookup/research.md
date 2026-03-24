@@ -125,7 +125,7 @@ This avoids the cost and fragility of rewriting all rendered DOM via a post-proc
 
 **Key details**:
 - Use CSS variables: `--background-primary`, `--background-secondary`, `--text-normal`, `--text-muted`, `--text-accent`, `--font-text`, `--font-ui-small`
-- Popup structure: character display (Trad/Simp), pinyin row, definitions list
+- Popup structure: single line with Simplified, Traditional (if different), and pinyin; then definitions list
 - Configurable fields hidden via CSS classes toggled by settings
 - Font size override applied as inline style when configured
 
@@ -192,6 +192,24 @@ const content = await this.app.vault.adapter.read(dictPath);
 - **Editing mode**: Create a `StateField<DecorationSet>` that holds the active highlight decoration. Set it via a `StateEffect` when lookup triggers, clear it when the popup is dismissed. The decoration applies a CSS class (e.g., `.hanzi-highlight`) styled with a background color using Obsidian's `--text-highlight-bg` CSS variable.
 - **Reading mode**: Use `Range.surroundContents()` to wrap the target text node in a `<span class="hanzi-highlight">`, or apply a CSS highlight via the Selection API. Remove the wrapper on popup dismiss.
 - The highlight must cover the full matched word (not just the hovered character) for multi-character matches.
+
+## R-012: Tone-Colored Pinyin Display
+
+**Decision**: Use the Pleco standard tone color scheme for pinyin syllable coloring, controlled by a user toggle (default: enabled).
+
+**Rationale**: Tone-colored pinyin is a widely adopted convention in Chinese learning tools (Pleco, Hanping, Skritter). Coloring by tone provides immediate visual recognition of tonal patterns, which is critical for learners. The Pleco scheme is the most widely recognized:
+- Tone 1 (flat/high): Red `#e30000`
+- Tone 2 (rising): Orange `#e68a00`
+- Tone 3 (dip): Green `#00802b`
+- Tone 4 (falling): Blue `#1510f0`
+- Tone 5 (neutral): Gray `#808080`
+
+**Implementation**: Split the pinyin string by spaces (each space-separated token is one syllable). Use the `pinyinRaw` field from `DictionaryEntry` to determine the tone number for each syllable (the trailing digit 1-5). Render each syllable as a separate `<span>` with the corresponding tone color. When the setting is disabled, render pinyin as a single element with the default `--text-muted` color.
+
+**Alternatives considered**:
+- Custom user-defined tone colors — deferred; adds complexity for a niche use case. Can be added later if requested.
+- CSS-only approach with classes — partially adopted; CSS classes (`.hanzi-tone-1` through `.hanzi-tone-5`) are defined for potential theme override, but inline colors are the primary mechanism since Obsidian themes may not define these custom properties.
+- Other color schemes (e.g., MDBG blue/green/orange/red/black) — rejected; Pleco scheme is the most widely recognized standard among Chinese learners.
 
 ## R-009: Mobile Support
 

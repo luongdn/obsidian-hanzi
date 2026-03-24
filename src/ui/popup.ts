@@ -34,14 +34,30 @@ export function createPopupEl(
         charsEl.appendChild(tradEl);
       }
 
-      entryEl.appendChild(charsEl);
-    }
+      if (settings.showPinyin) {
+        const pinyinEl = document.createElement('span');
+        pinyinEl.classList.add('hanzi-popup-pinyin');
 
-    if (settings.showPinyin) {
-      const pinyinEl = document.createElement('div');
-      pinyinEl.classList.add('hanzi-popup-pinyin');
-      pinyinEl.textContent = entry.pinyin;
-      entryEl.appendChild(pinyinEl);
+        if (settings.toneColoredPinyin) {
+          const syllables = entry.pinyin.split(' ');
+          const rawSyllables = entry.pinyinRaw.split(' ');
+          for (let i = 0; i < syllables.length; i++) {
+            const span = document.createElement('span');
+            const toneMatch = rawSyllables[i]?.match(/[1-5]$/);
+            const tone = toneMatch ? parseInt(toneMatch[0], 10) : 5;
+            span.classList.add(`hanzi-tone-${tone}`);
+            span.textContent = syllables[i];
+            if (i > 0) pinyinEl.appendChild(document.createTextNode(' '));
+            pinyinEl.appendChild(span);
+          }
+        } else {
+          pinyinEl.textContent = entry.pinyin;
+        }
+
+        charsEl.appendChild(pinyinEl);
+      }
+
+      entryEl.appendChild(charsEl);
     }
 
     if (settings.showDefinitions) {

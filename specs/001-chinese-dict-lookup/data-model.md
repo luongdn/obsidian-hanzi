@@ -65,6 +65,7 @@ User-configurable preferences persisted via Obsidian's data API.
 | showPinyin        | `boolean`                     | `true`           | Display pinyin in popup                  |
 | showDefinitions   | `boolean`                     | `true`           | Display definitions in popup             |
 | popupFontSize     | `number`                      | `14`             | Font size in pixels for popup content    |
+| toneColoredPinyin | `boolean`                     | `true`           | Color pinyin syllables by tone (Pleco scheme) |
 | maxLookAhead      | `number`                      | `8`              | Max characters to scan for longest match |
 
 **Persistence**: Serialized as JSON via `Plugin.loadData()` / `Plugin.saveData()`.

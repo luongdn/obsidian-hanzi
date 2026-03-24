@@ -5,7 +5,7 @@
 
 ## Summary
 
-Build an Obsidian plugin that provides offline Chinese-English dictionary lookup using the bundled CC-CEDICT dictionary. The plugin detects CJK characters at the cursor position (via CodeMirror 6 `hoverTooltip` for hover mode, selection change events for manual mode, and delegated `mouseover` with `caretRangeFromPoint` for reading mode), performs longest-match word lookup (up to 8 characters), and displays a theme-aware popup with Traditional/Simplified forms, pinyin with tone marks, and English definitions. The dictionary (~124K entries, 10MB) is parsed at plugin load time into a dual-map index: a primary `Map<string, DictionaryEntry[]>` keyed by Simplified form (~120K keys) plus a redirect `Map<string, string>` for Traditional→Simplified lookups (~76K entries), providing O(1) lookups while avoiding ~77K redundant array allocations.
+Build an Obsidian plugin that provides offline Chinese-English dictionary lookup using the bundled CC-CEDICT dictionary. The plugin detects CJK characters at the cursor position (via CodeMirror 6 `hoverTooltip` for hover mode, selection change events for manual mode, and delegated `mouseover` with `caretRangeFromPoint` for reading mode), performs longest-match word lookup (up to 8 characters), and displays a theme-aware popup with Simplified form, Traditional form (if different), and pinyin with tone marks (optionally tone-colored using the Pleco color scheme) on a single line, followed by English definitions. The dictionary (~124K entries, 10MB) is parsed at plugin load time into a dual-map index: a primary `Map<string, DictionaryEntry[]>` keyed by Simplified form (~120K keys) plus a redirect `Map<string, string>` for Traditional→Simplified lookups (~76K entries), providing O(1) lookups while avoiding ~77K redundant array allocations.
 
 ## Technical Context
 
@@ -20,7 +20,7 @@ Build an Obsidian plugin that provides offline Chinese-English dictionary lookup
 **Project Type**: Obsidian community plugin
 **Performance Goals**: Dictionary load <2s, lookup <200ms, popup render <100ms, memory <50MB
 **Constraints**: Fully offline, no network dependencies, must not block main thread during dictionary loading
-**Scale/Scope**: Single plugin, ~124K dictionary entries, 7 settings fields
+**Scale/Scope**: Single plugin, ~124K dictionary entries, 8 settings fields
 
 ## Constitution Check
 
