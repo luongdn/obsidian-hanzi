@@ -1,0 +1,55 @@
+.hanzi-popup {
+  background-color: var(--background-primary);
+  color: var(--text-normal);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  max-width: 320px;
+  font-family: var(--font-text);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  line-height: 1.5;
+}
+
+.hanzi-popup-chars {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.hanzi-popup-traditional {
+  font-size: 1.4em;
+  color: var(--text-normal);
+}
+
+.hanzi-popup-simplified {
+  font-size: 1.4em;
+  color: var(--text-accent);
+}
+
+.hanzi-popup-pinyin {
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+  margin-bottom: 6px;
+}
+
+.hanzi-popup-definitions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hanzi-popup-definitions li {
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  padding: 1px 0;
+}
+
+.hanzi-popup-definitions li::before {
+  content: '• ';
+  color: var(--text-muted);
+}
+
+.hanzi-highlight {
+  background-color: var(--text-highlight-bg);
+  border-radius: 2px;
+}

@@ -1,0 +1,34 @@
+{
+  "name": "obsidian-hanzi",
+  "version": "1.0.0",
+  "description": "Offline Chinese-English dictionary lookup for Obsidian",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "tsc --noEmit -p tsconfig.json && node esbuild.config.mjs production",
+    "lint": "eslint src",
+    "test": "vitest run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@codemirror/state": "^6.6.0",
+    "@codemirror/view": "^6.40.0",
+    "@types/node": "^22.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "builtin-modules": "^4.0.0",
+    "esbuild": "^0.21.0",
+    "eslint": "^9.0.0",
+    "jsdom": "^29.0.1",
+    "obsidian": "^1.12.3",
+    "typescript": "^5.8.0",
+    "vitest": "^2.0.0"
+  },
+  "peerDependencies": {
+    "@codemirror/state": "^6.0.0",
+    "@codemirror/view": "^6.0.0",
+    "obsidian": "latest"
+  }
+}
