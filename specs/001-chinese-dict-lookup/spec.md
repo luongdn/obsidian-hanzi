@@ -105,6 +105,7 @@ A user wants to customize what information appears in the popup (e.g., hide piny
 - **FR-007**: System MUST support a "hover" trigger mode (default) where hovering over a character triggers lookup.
 - **FR-008**: System MUST support a "manual selection" trigger mode where only explicitly selected text triggers lookup.
 - **FR-009**: System MUST allow users to toggle between hover and manual selection trigger modes via plugin settings.
+- **FR-019**: System MUST register two Obsidian commands accessible via the command palette (Cmd/Ctrl+P): "Hanzi: Use hover mode" and "Hanzi: Use selection mode". Each command switches the trigger mode to the specified mode and persists the change to settings immediately. A Notice MUST confirm the mode change (e.g., "Hanzi: Switched to hover mode").
 - **FR-016**: On mobile devices (where hover is unavailable), the system MUST automatically fall back to tap-to-select behavior regardless of the configured trigger mode.
 - **FR-017**: The popup MUST be dismissed when the cursor moves away from the looked-up character OR when the user clicks outside the popup, whichever occurs first.
 - **FR-018**: The plugin MUST function in both Obsidian's editing mode (Live Preview) and reading mode.
@@ -128,7 +129,7 @@ A user wants to customize what information appears in the popup (e.g., hide piny
 - **SC-001**: Users can look up any Chinese character present in CC-CEDICT and see its definition within 1 second of triggering the lookup.
 - **SC-002**: The plugin functions fully without an internet connection after initial installation.
 - **SC-003**: 100% of CC-CEDICT entries are searchable by both Traditional and Simplified character forms.
-- **SC-004**: Users can switch between hover and manual selection modes without restarting Obsidian.
+- **SC-004**: Users can switch between hover and manual selection modes without restarting Obsidian — via either settings UI or command palette commands.
 - **SC-005**: The popup is visually consistent with the active Obsidian theme (inherits theme colors and fonts).
 - **SC-006**: Users can customize popup content (toggle fields on/off) and see changes reflected immediately on the next lookup.
 

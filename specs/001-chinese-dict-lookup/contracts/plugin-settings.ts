@@ -36,6 +36,6 @@ export const DEFAULT_SETTINGS: HanziPluginSettings = {
   showSimplified: true,
   showPinyin: true,
   showDefinitions: true,
-  popupFontSize: 14,
+  popupFontSize: 12,
   maxLookAhead: 8,
 };

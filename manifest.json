@@ -1,0 +1,10 @@
+{
+  "id": "obsidian-hanzi",
+  "name": "Obsidian Hanzi",
+  "version": "1.0.0",
+  "minAppVersion": "1.5.0",
+  "description": "Offline Chinese-English dictionary lookup using CC-CEDICT. Hover over any Chinese character to see Traditional/Simplified forms, pinyin, and definitions.",
+  "author": "",
+  "authorUrl": "",
+  "isDesktopOnly": false
+}
