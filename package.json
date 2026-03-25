@@ -7,7 +7,8 @@
     "dev": "node esbuild.config.mjs",
     "build": "tsc --noEmit -p tsconfig.json && node esbuild.config.mjs production",
     "lint": "eslint src",
-    "test": "vitest run"
+    "test": "vitest run",
+    "version": "node -e \"let m=require('./manifest.json');m.version=require('./package.json').version;require('fs').writeFileSync('manifest.json',JSON.stringify(m,null,2)+'\\n')\" && git add manifest.json"
   },
   "keywords": [],
   "author": "",
