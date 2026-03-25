@@ -3,7 +3,7 @@ import { StateField, StateEffect } from '@codemirror/state';
 import { DictionaryIndex } from '../dictionary/types';
 import { HanziPluginSettings } from '../settings';
 import { isCJK } from '../lookup/detector';
-import { lookupText } from '../lookup/engine';;
+import { lookupText } from '../lookup/engine';
 import { createPopupEl } from '../ui/popup';
 import { setHighlight, clearHighlight } from '../ui/highlight';
 
