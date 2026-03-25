@@ -12,7 +12,7 @@ Powered by [CC-CEDICT](https://cc-cedict.org/wiki/) with 115,000+ entries. The d
 - **Longest-match lookup**: automatically finds multi-character words (configurable up to 12 characters)
 - **Traditional & Simplified**: displays both character forms with pinyin and all matching definitions
 - **Tone-colored pinyin** with optional color-coding by tone (Pleco color scheme)
-- **Fully offline** (after first use): the dictionary is downloaded once on first load and cached locally — no network needed after that
+- **Offline lookup** (after first use): the dictionary is downloaded once on first load and cached locally, no network needed after that
 - **Theme-aware**: inherits your Obsidian theme's colors and fonts
 
 ## Usage
@@ -20,6 +20,8 @@ Powered by [CC-CEDICT](https://cc-cedict.org/wiki/) with 115,000+ entries. The d
 **Desktop (hover mode):** Move your cursor over any Chinese character to see its definition in a popup.
 
 **Desktop (selection mode):** Select Chinese text to trigger the popup.
+
+**Mobile:** Selection mode is always used.
 
 Switch between modes using the command palette:
 - `Hanzi: Use hover mode`
@@ -60,10 +62,6 @@ npm run build
 ```
 
 Copy `main.js`, `manifest.json`, `styles.css`, and `assets/` to your vault's plugin directory.
-
-## Dictionary
-
-This plugin uses the [CC-CEDICT](https://cc-cedict.org/wiki/) dictionary, a collaborative Chinese-English dictionary released under the [Creative Commons Attribution-ShareAlike 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license.
 
 ## AI Disclosure
 
