@@ -46,10 +46,9 @@ Switch between modes using the command palette:
 
 ### Manual Installation
 
-1. Download the latest release from the [Releases](https://github.com/luongdn/obsidian-hanzi/releases) page
-2. Extract `main.js`, `manifest.json`, and `styles.css` into your vault's `.obsidian/plugins/obsidian-hanzi/` directory
+1. Download `obsidian-hanzi-<version>.zip` from the [Releases](https://github.com/luongdn/obsidian-hanzi/releases) page
+2. Extract the zip into your vault's `.obsidian/plugins/` directory (this creates the `obsidian-hanzi/` folder with all required files)
 3. Reload Obsidian and enable the plugin in **Settings → Community plugins**
-4. The dictionary will be downloaded automatically on first use
 
 ## Building from Source
 

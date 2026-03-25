@@ -25,6 +25,13 @@ jobs:
           DICT_URL: https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/cedict_ts.u8
         run: npm run build
 
+      - name: Package zip for manual install
+        run: |
+          mkdir -p obsidian-hanzi/assets
+          cp main.js manifest.json styles.css obsidian-hanzi/
+          cp assets/cedict_ts.u8 obsidian-hanzi/assets/
+          zip -r obsidian-hanzi-${{ github.ref_name }}.zip obsidian-hanzi
+
       - uses: softprops/action-gh-release@v2
         with:
           files: |
@@ -32,3 +39,4 @@ jobs:
             manifest.json
             styles.css
             assets/cedict_ts.u8
+            obsidian-hanzi-${{ github.ref_name }}.zip
