@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest';
+import { Platform } from 'obsidian';
 import { ReadingModeHandler } from '../../src/editor/reading-mode';
 import { DictionaryIndexImpl } from '../../src/dictionary/index';
 import { DEFAULT_SETTINGS } from '../../src/settings';
@@ -179,6 +180,34 @@ describe('ReadingModeHandler', () => {
       const selectionCalls = spy.mock.calls.filter(([event]) => event === 'selectionchange');
       expect(selectionCalls).toHaveLength(1);
       spy.mockRestore();
+    });
+  });
+
+  describe('mobile override', () => {
+    beforeEach(() => {
+      container = document.createElement('div');
+      document.body.appendChild(container);
+      (Platform as { isMobile: boolean }).isMobile = true;
+    });
+
+    afterEach(() => {
+      container.remove();
+      (Platform as { isMobile: boolean }).isMobile = false;
+    });
+
+    it('uses selection mode on mobile even when hover is configured', () => {
+      const docSpy = vi.spyOn(document, 'addEventListener');
+      const containerSpy = vi.spyOn(container, 'addEventListener');
+      handler = new ReadingModeHandler(index, () => makeSettings({ triggerMode: 'hover' }));
+      handler.attach(container);
+
+      const selectionCalls = docSpy.mock.calls.filter(([event]) => event === 'selectionchange');
+      expect(selectionCalls).toHaveLength(1);
+
+      const moveCalls = containerSpy.mock.calls.filter(([event]) => event === 'mousemove');
+      expect(moveCalls).toHaveLength(0);
+
+      docSpy.mockRestore();
     });
   });
 });

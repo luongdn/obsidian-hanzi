@@ -1,3 +1,4 @@
+import { Platform } from 'obsidian';
 import { DictionaryIndex } from '../dictionary/types';
 import { HanziPluginSettings } from '../settings';
 import { isCJK } from '../lookup/detector';
@@ -27,7 +28,7 @@ export class ReadingModeHandler {
 
   attach(container: HTMLElement): void {
     this.container = container;
-    const mode = this.getSettings().triggerMode;
+    const mode = Platform.isMobile ? 'selection' : this.getSettings().triggerMode;
     if (mode === 'selection') {
       document.addEventListener('selectionchange', this.boundSelectionChange);
     } else {
