@@ -4,6 +4,8 @@ Offline Chinese-English dictionary lookup for [Obsidian](https://obsidian.md). H
 
 Powered by [CC-CEDICT](https://cc-cedict.org/wiki/) with 115,000+ entries. The dictionary is automatically downloaded on first use and cached locally for fully offline lookups.
 
+![Demo](images/demo.gif)
+
 ## Features
 
 - **Instant popup**: hover over any Chinese character in your notes to see definitions
@@ -33,7 +35,7 @@ Switch between modes using the command palette:
 | Show Pinyin | Display pinyin pronunciation | On |
 | Show Definitions | Display English definitions | On |
 | Tone-colored pinyin | Color pinyin by tone | On |
-| Popup font size | Size of popup text (8–32px) | 16px |
+| Popup font size | Size of popup text (8–32px) | 12px |
 | Max look-ahead | Characters to scan for word match (1–12) | 8 |
 
 ## Installation
