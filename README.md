@@ -2,7 +2,7 @@
 
 Offline Chinese-English dictionary lookup for [Obsidian](https://obsidian.md). Hover over any Chinese character to see its Traditional/Simplified forms, pinyin, and English definitions.
 
-Powered by [CC-CEDICT](https://cc-cedict.org/wiki/) with 115,000+ entries bundled directly into the plugin.
+Powered by [CC-CEDICT](https://cc-cedict.org/wiki/) with 115,000+ entries. The dictionary is automatically downloaded on first use and cached locally for fully offline lookups.
 
 ## Features
 
@@ -10,7 +10,7 @@ Powered by [CC-CEDICT](https://cc-cedict.org/wiki/) with 115,000+ entries bundle
 - **Longest-match lookup**: automatically finds multi-character words (configurable up to 12 characters)
 - **Traditional & Simplified**: displays both character forms with pinyin and all matching definitions
 - **Tone-colored pinyin** with optional color-coding by tone (Pleco color scheme)
-- **Fully offline**: the dictionary is bundled with the plugin, no network requests needed
+- **Fully offline** (after first use): the dictionary is downloaded once on first load and cached locally — no network needed after that
 - **Theme-aware**: inherits your Obsidian theme's colors and fonts
 
 ## Usage
@@ -47,8 +47,9 @@ Switch between modes using the command palette:
 ### Manual Installation
 
 1. Download the latest release from the [Releases](https://github.com/luongdn/obsidian-hanzi/releases) page
-2. Extract `main.js`, `manifest.json`, `styles.css`, and the `assets/` folder into your vault's `.obsidian/plugins/obsidian-hanzi/` directory
+2. Extract `main.js`, `manifest.json`, and `styles.css` into your vault's `.obsidian/plugins/obsidian-hanzi/` directory
 3. Reload Obsidian and enable the plugin in **Settings → Community plugins**
+4. The dictionary will be downloaded automatically on first use
 
 ## Building from Source
 

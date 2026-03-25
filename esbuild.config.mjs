@@ -11,12 +11,16 @@ if you want to view the source, please visit the github repository
 `;
 
 const prod = process.argv[2] === 'production';
+const dictUrl = process.env.DICT_URL || '';
 
 const context = await esbuild.context({
   banner: {
     js: banner,
   },
   entryPoints: ['src/main.ts'],
+  define: {
+    DICT_URL: JSON.stringify(dictUrl),
+  },
   bundle: true,
   external: [
     'obsidian',

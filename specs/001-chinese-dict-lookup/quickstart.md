@@ -34,9 +34,8 @@ npm run test      # Run Vitest unit tests
    - `main.js`
    - `manifest.json`
    - `styles.css`
-   - `assets/cedict_ts.u8`
 4. Enable "Obsidian Hanzi" in Settings → Community Plugins
-5. Open a note with Chinese text and hover over a character
+5. Open a note with Chinese text and hover over a character (the dictionary will be downloaded automatically on first use)
 
 ## Project Structure
 
@@ -68,7 +67,7 @@ obsidian-hanzi/
 │   └── fixtures/
 │       └── test-dict.u8        # Small CC-CEDICT subset for testing
 ├── assets/
-│   └── cedict_ts.u8            # Bundled CC-CEDICT dictionary
+│   └── cedict_ts.u8            # CC-CEDICT dictionary (downloaded on first load, cached locally)
 ├── manifest.json
 ├── package.json
 ├── tsconfig.json

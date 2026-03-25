@@ -5,7 +5,7 @@
 
 ## Summary
 
-Build an Obsidian plugin that provides offline Chinese-English dictionary lookup using the bundled CC-CEDICT dictionary. The plugin detects CJK characters at the cursor position (via CodeMirror 6 `hoverTooltip` for hover mode, selection change events for manual mode, and delegated `mouseover` with `caretRangeFromPoint` for reading mode), performs longest-match word lookup (up to 8 characters), and displays a theme-aware popup with Simplified form, Traditional form (if different), and pinyin with tone marks (optionally tone-colored using the Pleco color scheme) on a single line, followed by English definitions. The dictionary (~124K entries, 10MB) is parsed at plugin load time into a dual-map index: a primary `Map<string, DictionaryEntry[]>` keyed by Simplified form (~120K keys) plus a redirect `Map<string, string>` for Traditional→Simplified lookups (~76K entries), providing O(1) lookups while avoiding ~77K redundant array allocations.
+Build an Obsidian plugin that provides offline Chinese-English dictionary lookup using the CC-CEDICT dictionary (downloaded on first load and cached locally). The plugin detects CJK characters at the cursor position (via CodeMirror 6 `hoverTooltip` for hover mode, selection change events for manual mode, and delegated `mouseover` with `caretRangeFromPoint` for reading mode), performs longest-match word lookup (up to 8 characters), and displays a theme-aware popup with Simplified form, Traditional form (if different), and pinyin with tone marks (optionally tone-colored using the Pleco color scheme) on a single line, followed by English definitions. The dictionary (~124K entries, 10MB) is parsed at plugin load time into a dual-map index: a primary `Map<string, DictionaryEntry[]>` keyed by Simplified form (~120K keys) plus a redirect `Map<string, string>` for Traditional→Simplified lookups (~76K entries), providing O(1) lookups while avoiding ~77K redundant array allocations.
 
 ## Technical Context
 
@@ -14,12 +14,12 @@ Build an Obsidian plugin that provides offline Chinese-English dictionary lookup
 **Primary Dependencies**: `obsidian` (Plugin API), `@codemirror/view` (hoverTooltip), `@codemirror/state`
 **Linter**: ESLint with `@coedit/eslint-plugin-obsidian`
 **Package Manager**: npm
-**Storage**: Bundled file (`assets/cedict_ts.u8`, 10MB, ~124K entries); loaded via `vault.adapter.read()`
+**Storage**: Dictionary file (`assets/cedict_ts.u8`, 10MB, ~124K entries) distributed as a GitHub release asset; downloaded on first load via `requestUrl()` and cached locally; loaded via `vault.adapter.read()`
 **Testing**: Vitest (unit tests for core logic)
 **Target Platform**: Obsidian desktop (Windows, macOS, Linux) and mobile (iOS, Android)
 **Project Type**: Obsidian community plugin
 **Performance Goals**: Dictionary load <2s, lookup <200ms, popup render <100ms, memory <50MB
-**Constraints**: Fully offline, no network dependencies, must not block main thread during dictionary loading
+**Constraints**: Offline after initial dictionary download, must not block main thread during dictionary loading
 **Scale/Scope**: Single plugin, ~124K dictionary entries, 8 settings fields
 
 ## Constitution Check
@@ -91,7 +91,7 @@ tests/
     └── test-dict.u8            # Small CC-CEDICT subset
 
 assets/
-└── cedict_ts.u8                # Bundled CC-CEDICT dictionary (10MB)
+└── cedict_ts.u8                # CC-CEDICT dictionary (10MB, downloaded on first load)
 
 styles.css                      # Plugin styles (theme-aware via CSS variables)
 manifest.json                   # Obsidian plugin manifest

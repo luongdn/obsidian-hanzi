@@ -18,3 +18,4 @@ export class Notice {
 }
 export const Platform = { isMobile: false };
 export function normalizePath(p: string) { return p; }
+export function requestUrl(_req: unknown) { return Promise.resolve({ arrayBuffer: new ArrayBuffer(0) }); }

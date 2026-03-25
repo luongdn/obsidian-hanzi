@@ -1,4 +1,6 @@
-import { Notice, Platform, Plugin, normalizePath } from 'obsidian';
+import { Notice, Platform, Plugin, normalizePath, requestUrl } from 'obsidian';
+
+declare const DICT_URL: string;
 import { Extension } from '@codemirror/state';
 import { DictionaryIndex } from './dictionary/types';
 import { DictionaryIndexImpl } from './dictionary/index';
@@ -25,7 +27,7 @@ export default class HanziPlugin extends Plugin {
     try {
       const dir = this.manifest.dir ?? '';
       const dictPath = normalizePath(`${dir}/assets/cedict_ts.u8`);
-      const content = await this.app.vault.adapter.read(dictPath);
+      const content = await this.loadDictionary(dictPath);
       this.dictIndex = new DictionaryIndexImpl(content);
       console.log(`[Hanzi] Dictionary loaded: ${this.dictIndex.size} entries`);
     } catch (e) {
@@ -49,6 +51,24 @@ export default class HanziPlugin extends Plugin {
     await this.saveData(this.settings);
     this.refreshExtensions();
     this.refreshReadingMode();
+  }
+
+  private async loadDictionary(dictPath: string): Promise<string> {
+    const adapter = this.app.vault.adapter;
+    if (await adapter.exists(dictPath)) {
+      return adapter.read(dictPath);
+    }
+
+    new Notice('Obsidian Hanzi: Downloading dictionary...');
+    const response = await requestUrl({ url: DICT_URL });
+    const content = new TextDecoder().decode(response.arrayBuffer);
+    const dir = dictPath.substring(0, dictPath.lastIndexOf('/'));
+    if (!(await adapter.exists(dir))) {
+      await adapter.mkdir(dir);
+    }
+    await adapter.write(dictPath, content);
+    new Notice('Obsidian Hanzi: Dictionary downloaded successfully.');
+    return content;
   }
 
   private async loadSettings(): Promise<void> {

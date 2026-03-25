@@ -22,7 +22,7 @@
 - [X] T001 Create project directory structure: `src/dictionary/`, `src/lookup/`, `src/ui/`, `src/editor/`, `tests/unit/`, `tests/fixtures/`, `assets/`
 - [X] T002 Initialize package.json with dependencies: `obsidian`, `@codemirror/view`, `@codemirror/state` (peer/external), `typescript`, `esbuild`, `eslint`, `vitest` (dev)
 - [X] T003 [P] Configure tsconfig.json with strict mode, ES6 target, CommonJS module output
-- [X] T004 [P] Configure esbuild.config.mjs: CommonJS output, ES2018 target, externals (`obsidian`, `electron`, `@codemirror/*`, `@lezer/*`), asset copy for `assets/cedict_ts.u8`
+- [X] T004 [P] Configure esbuild.config.mjs: CommonJS output, ES2018 target, externals (`obsidian`, `electron`, `@codemirror/*`, `@lezer/*`), `DICT_URL` build-time injection via `define`
 - [X] T005 [P] Create manifest.json with plugin metadata (id: `obsidian-hanzi`, minAppVersion) and versions.json
 - [X] T006 [P] Configure eslint.config.mts with `@coedit/eslint-plugin-obsidian`
 - [X] T007 [P] Configure Vitest in vitest.config.ts for unit testing with TypeScript support
@@ -71,7 +71,7 @@
 - [X] T021 [US1] Implement character highlight decoration in src/ui/highlight.ts — CM6 `StateField<DecorationSet>` with `StateEffect` for set/clear, `Decoration.mark` with `.hanzi-highlight` CSS class per R-011; cover full matched word range for multi-char matches
 - [X] T022 [US1] Implement CM6 hover tooltip extension in src/editor/hover-extension.ts — `hoverTooltip()` handler: read char at pos, check `isCJK()`, extract up to `maxLookAhead` chars ahead, call engine `lookup()`, return `Tooltip` with popup DOM; integrate highlight set/clear per R-004
 - [X] T023 [US1] Implement reading mode delegated listener in src/editor/reading-mode.ts — single `mouseover` on `.markdown-reading-view`, `caretRangeFromPoint` to find char, CJK check, lookup, show popup as absolutely positioned DOM element, dismiss on `mouseleave`/`click` outside, temporary `<span class="hanzi-highlight">` wrapper per R-004
-- [X] T024 [US1] Implement plugin entry point in src/main.ts — `HanziPlugin extends Plugin`: `onload()` loads dictionary via `vault.adapter.read(normalizePath(this.manifest.dir + '/assets/cedict_ts.u8'))`, parses into `DictionaryIndex`, registers hover extension via `registerEditorExtension()`, registers reading mode listener, adds settings tab, handles load errors with `Notice`; `onunload()` cleans up per R-001, R-008
+- [X] T024 [US1] Implement plugin entry point in src/main.ts — `HanziPlugin extends Plugin`: `onload()` loads dictionary via `loadDictionary()` (checks local cache first, downloads from `DICT_URL` via `requestUrl()` on first load, caches to `assets/cedict_ts.u8`), parses into `DictionaryIndex`, registers hover extension via `registerEditorExtension()`, registers reading mode listener, adds settings tab, handles load errors with `Notice`; `onunload()` cleans up per R-001, R-008
 
 **Checkpoint**: User Story 1 fully functional — hover over Chinese character shows popup with all dictionary data in editing and reading modes
 
@@ -137,7 +137,7 @@
 
 - [X] T034 Implement graceful error handling for missing/corrupted dictionary in src/main.ts — `Notice` on parse failure, plugin enters degraded mode (no lookups) without crashing (FR-014)
 - [X] T035 Handle edge cases across all modes — cursor between characters (no popup), Chinese punctuation excluded, empty selection in manual mode ignored, homograph multiple entries all displayed per spec Edge Cases
-- [X] T036 [P] Validate build and asset pipeline — ensure `npm run build` produces `main.js`, `manifest.json`, `styles.css` in output; `assets/cedict_ts.u8` copied correctly; plugin loads in Obsidian
+- [X] T036 [P] Validate build and release pipeline — ensure `npm run build` produces `main.js`, `manifest.json`, `styles.css` in output; GitHub Actions release workflow uploads `cedict_ts.u8` as release asset and injects `DICT_URL` at build time; plugin loads in Obsidian and downloads dictionary on first use
 - [X] T037 [P] Run full test suite and lint — `npm run test`, `npm run lint`, fix any issues; validate all unit tests pass
 
 ---

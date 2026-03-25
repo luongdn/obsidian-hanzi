@@ -31,7 +31,7 @@ A user is reading a note containing Chinese text. They hover their cursor over a
 2. **Given** a note contains the character "國", **When** the user hovers over it, **Then** the popup shows on a single line: Simplified (国), Traditional (國), and pinyin, with all translations.
 3. **Given** the user hovers over a non-Chinese character (e.g., "A" or "5"), **When** the hover event fires, **Then** no popup is displayed.
 4. **Given** the user hovers over a Chinese character, **When** the popup appears, **Then** the character under the cursor is visually highlighted (selected).
-5. **Given** the device has no internet connection, **When** the user hovers over a Chinese character, **Then** the lookup still works using the bundled offline dictionary.
+5. **Given** the dictionary has been downloaded and cached, **When** the user hovers over a Chinese character without internet, **Then** the lookup still works using the locally cached dictionary.
 
 ---
 
@@ -98,7 +98,7 @@ A user wants to customize what information appears in the popup (e.g., hide piny
 
 ### Functional Requirements
 
-- **FR-001**: System MUST perform dictionary lookups entirely offline using a bundled CC-CEDICT dictionary file.
+- **FR-001**: System MUST perform dictionary lookups offline using the CC-CEDICT dictionary file. On first load, if the dictionary is not present locally, the plugin downloads it from the GitHub release and caches it in the plugin's assets directory. All subsequent lookups are fully offline.
 - **FR-002**: System MUST detect Chinese characters (CJK Unified Ideographs) at the current cursor/hover position.
 - **FR-003**: System MUST support lookup of both Traditional and Simplified Chinese characters, resolving entries regardless of which form appears in the note.
 - **FR-004**: System MUST display a popup containing: a single line with Simplified form, Traditional form (if different from Simplified), and pinyin with tone marks (in that order), followed by all matching translation entries from the dictionary.
@@ -131,7 +131,7 @@ A user wants to customize what information appears in the popup (e.g., hide piny
 ### Measurable Outcomes
 
 - **SC-001**: Users can look up any Chinese character present in CC-CEDICT and see its definition within 1 second of triggering the lookup.
-- **SC-002**: The plugin functions fully without an internet connection after initial installation.
+- **SC-002**: The plugin functions fully without an internet connection after the initial dictionary download.
 - **SC-003**: 100% of CC-CEDICT entries are searchable by both Traditional and Simplified character forms.
 - **SC-004**: Users can switch between hover and manual selection modes without restarting Obsidian — via either settings UI or command palette commands.
 - **SC-005**: The popup is visually consistent with the active Obsidian theme (inherits theme colors and fonts).
@@ -139,7 +139,7 @@ A user wants to customize what information appears in the popup (e.g., hide piny
 
 ## Assumptions
 
-- The CC-CEDICT dictionary file will be bundled with the plugin distribution, so users do not need to download it separately. The dictionary is frozen per release and not user-replaceable, enabling future build-time optimizations on the fixed file.
+- The CC-CEDICT dictionary file is distributed as a GitHub release asset and downloaded automatically on first plugin load. Obsidian's community plugin installer only downloads `main.js`, `manifest.json`, and `styles.css`, so the dictionary cannot be bundled directly. Once downloaded, it is cached locally in the plugin's `assets/` directory and used for all subsequent loads. The dictionary is frozen per release and not user-replaceable.
 - The CC-CEDICT format is stable and well-documented (Traditional Simplified [pinyin] /definition1/definition2/).
 - The plugin targets Obsidian's desktop and mobile platforms that support the standard Plugin API.
 - Popup positioning follows standard Obsidian tooltip/popover behavior (near cursor, within viewport bounds).

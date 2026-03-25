@@ -23,13 +23,13 @@
 
 ## R-002: CC-CEDICT Dictionary Format & Parsing
 
-**Decision**: Parse the bundled `cedict_ts.u8` file at plugin load time into a dual-map index: a primary `Map<string, DictionaryEntry[]>` keyed by Simplified form, plus a redirect `Map<string, string>` mapping Traditional→Simplified for entries where the forms differ.
+**Decision**: Parse the `cedict_ts.u8` file at plugin load time into a dual-map index: a primary `Map<string, DictionaryEntry[]>` keyed by Simplified form, plus a redirect `Map<string, string>` mapping Traditional→Simplified for entries where the forms differ.
 
 **Rationale**: CC-CEDICT uses a well-defined line format:
 ```
 Traditional Simplified [pin1 yin1] /definition1/definition2/
 ```
-The bundled file is 10MB with ~124,443 entries and ~124,472 lines (including 29 comment/header lines starting with `#`). Parsing is straightforward: split each non-comment line by regex to extract Traditional, Simplified, pinyin, and definitions.
+The file is 10MB with ~124,443 entries and ~124,472 lines (including 29 comment/header lines starting with `#`). Parsing is straightforward: split each non-comment line by regex to extract Traditional, Simplified, pinyin, and definitions.
 
 Analysis of the actual dictionary file shows:
 - 62.3% of entries (77,493) have different Traditional and Simplified forms
@@ -147,27 +147,37 @@ This avoids the cost and fragility of rewriting all rendered DOM via a post-proc
 - Test longest-match algorithm
 - Manual integration testing in Obsidian for popup rendering and editor interaction
 
-## R-008: Dictionary Bundling & Loading Strategy
+## R-008: Dictionary Distribution & Loading Strategy
 
-**Decision**: Bundle `cedict_ts.u8` in `assets/` alongside `main.js`. Load at runtime via `this.app.vault.adapter.read()`. Copy the file to the output directory using a build script since esbuild only bundles JS.
+**Decision**: Distribute `cedict_ts.u8` as a GitHub release asset. On first plugin load, download it via Obsidian's `requestUrl()` and cache locally in the plugin's `assets/` directory. On subsequent loads, read from the local cache via `vault.adapter.read()`. The download URL is injected into `main.js` at build time via esbuild's `define` option, using the `DICT_URL` environment variable set by the GitHub Actions release workflow.
 
-**Rationale**: The dictionary is 10MB uncompressed. Obsidian plugins distribute files alongside `main.js` in the plugin's vault directory (`<vault>/.obsidian/plugins/<plugin-id>/`). esbuild does not handle non-JS assets, so the build process must copy `assets/cedict_ts.u8` to the output location.
+**Rationale**: Obsidian's community plugin installer only downloads `main.js`, `manifest.json`, and `styles.css` from GitHub releases — no additional files or folders. The dictionary is 10MB, so it cannot be bundled inside `main.js` without making the file enormous. The download-at-runtime pattern is the established community standard for Obsidian plugins with large data files (used by Zhongwen Reader, obsidian-dictionary, and others).
 
 **Loading path**:
 ```typescript
 const dictPath = normalizePath(this.manifest.dir + '/assets/cedict_ts.u8');
-const content = await this.app.vault.adapter.read(dictPath);
+if (await adapter.exists(dictPath)) {
+  return adapter.read(dictPath);
+}
+// First load: download from GitHub release
+const response = await requestUrl({ url: DICT_URL });
+const content = new TextDecoder().decode(response.arrayBuffer);
+await adapter.mkdir(dir);
+await adapter.write(dictPath, content);
+return content;
 ```
 
-`vault.adapter.read()` returns a UTF-8 string (the dictionary is UTF-8 encoded), works on both desktop and mobile, and doesn't require filesystem access outside the vault. The `this.manifest.dir` property gives the plugin's installation directory relative to the vault root.
+`vault.adapter.read()` returns a UTF-8 string, works on both desktop and mobile, and doesn't require filesystem access outside the vault. `requestUrl()` is Obsidian's cross-platform HTTP client that works on both desktop and mobile.
 
-**Build asset copying**: Add a post-build step in `esbuild.config.mjs` (or npm script) that copies `assets/` to the output directory. For dev workflow with a symlinked plugin directory, the assets are already in place.
+**Build-time URL injection**: The `DICT_URL` constant is injected via esbuild's `define` option. The GitHub Actions release workflow sets it to `https://github.com/<repo>/releases/download/<tag>/cedict_ts.u8`, ensuring each release's `main.js` points to the matching dictionary version.
+
+**GitHub Actions workflow**: The release workflow uploads `cedict_ts.u8` as a release asset alongside `main.js`, `manifest.json`, and `styles.css`. The `DICT_URL` env var is constructed from `github.repository` and `github.ref_name` (the tag).
 
 **Alternatives considered**:
-- `FileSystemAdapter.readBinary()` — works but returns `ArrayBuffer` requiring decoding; `read()` returns string directly
-- `fetch()` from plugin URL — not portable across desktop/mobile; vault adapter is the canonical Obsidian way
-- Embed dictionary in main.js as a string/JSON — rejected; would make the JS file enormous and slow to parse
-- Download on first use — rejected; spec requires fully offline operation
+- Bundle in `assets/` folder alongside `main.js` — rejected; Obsidian community plugin installer does not download additional files beyond `main.js`, `manifest.json`, `styles.css`
+- Embed dictionary in main.js as a string/JSON — rejected; would make the JS file ~10MB+, slow to install and parse
+- Download from MDBG (upstream CC-CEDICT host) — rejected; third-party URL may change, serves compressed format requiring decompression, no version pinning
+- `fetch()` from plugin URL — rejected; not portable across desktop/mobile; `requestUrl()` is the canonical Obsidian way
 - Pre-compiled binary format — viable future optimization, deferred for simplicity
 
 ## R-010: Popup Dismissal Mechanics

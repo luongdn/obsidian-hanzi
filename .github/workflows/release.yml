@@ -20,7 +20,10 @@ jobs:
 
       - run: npm ci
 
-      - run: npm run build
+      - name: Build with dictionary URL
+        env:
+          DICT_URL: https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/cedict_ts.u8
+        run: npm run build
 
       - uses: softprops/action-gh-release@v2
         with:
@@ -28,3 +31,4 @@ jobs:
             main.js
             manifest.json
             styles.css
+            assets/cedict_ts.u8

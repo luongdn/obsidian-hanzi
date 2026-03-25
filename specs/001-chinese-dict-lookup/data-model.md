@@ -101,8 +101,12 @@ PluginSettings  →(configures)→  LookupResult display
 ### Plugin Lifecycle
 
 ```
-[Unloaded] → onload() → [Loading Dictionary] → parse complete → [Ready]
-                                                parse error → [Error State]
+[Unloaded] → onload() → [Loading Dictionary]
+[Loading Dictionary] → dict cached locally → read from disk → [Parsing]
+[Loading Dictionary] → dict not cached → download via requestUrl() → cache to disk → [Parsing]
+[Loading Dictionary] → download failed → [Error State]
+[Parsing] → parse complete → [Ready]
+[Parsing] → parse error → [Error State]
 [Ready] → onunload() → [Unloaded]
 [Error State] → Notice displayed → [Degraded: no lookups]
 ```
