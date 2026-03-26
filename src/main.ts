@@ -23,24 +23,30 @@ export default class HanziPlugin extends Plugin {
   async onload(): Promise<void> {
     await this.loadSettings();
     this.addSettingTab(new HanziSettingTab(this.app, this));
+    this.registerEditorExtensions();
+    this.registerReadingMode();
+    this.registerCommands();
 
+    this.app.workspace.onLayoutReady(() => {
+      this.initDictionary();
+    });
+  }
+
+  private async initDictionary(): Promise<void> {
     try {
       const dir = this.manifest.dir ?? '';
       const dictPath = normalizePath(`${dir}/assets/cedict_ts.u8`);
       const content = await this.loadDictionary(dictPath);
       this.dictIndex = new DictionaryIndexImpl(content);
       console.log(`[Hanzi] Dictionary loaded: ${this.dictIndex.size} entries`);
+      this.refreshExtensions();
+      this.refreshReadingMode();
     } catch (e) {
+      console.error('[Hanzi] Failed to load dictionary:', e);
       new Notice(
         'Obsidian Hanzi: Failed to load dictionary. Lookups will not be available.'
       );
-      return;
     }
-
-    console.log('[Hanzi] Plugin loaded successfully');
-    this.registerEditorExtensions();
-    this.registerReadingMode();
-    this.registerCommands();
   }
 
   onunload(): void {

@@ -116,7 +116,7 @@ A user wants to customize what information appears in the popup (e.g., hide piny
 - **FR-012**: System MUST allow users to configure which popup fields are displayed (Traditional characters, Simplified characters, pinyin, translations) via plugin settings.
 - **FR-013**: System MUST allow users to configure popup style overrides (e.g., font size) via plugin settings.
 - **FR-014**: System MUST handle missing or corrupted dictionary files gracefully by showing an error notification without crashing.
-- **FR-015**: System MUST parse and index the CC-CEDICT dictionary at plugin load time for fast lookups.
+- **FR-015**: System MUST parse and index the CC-CEDICT dictionary after the app layout is ready (deferred from plugin load) to avoid blocking Obsidian startup. Lookups become available once indexing completes.
 - **FR-020**: System MUST support tone-colored pinyin display, where each pinyin syllable is colored according to its tone using the Pleco standard color scheme: Tone 1 red (`#e30000`), Tone 2 orange (`#e68a00`), Tone 3 green (`#00802b`), Tone 4 blue (`#1510f0`), Tone 5/neutral gray (`#808080`).
 - **FR-021**: System MUST allow users to enable or disable tone-colored pinyin via a toggle in plugin settings. Default: enabled.
 

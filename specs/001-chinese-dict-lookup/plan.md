@@ -19,7 +19,7 @@ Build an Obsidian plugin that provides offline Chinese-English dictionary lookup
 **Target Platform**: Obsidian desktop (Windows, macOS, Linux) and mobile (iOS, Android)
 **Project Type**: Obsidian community plugin
 **Performance Goals**: Dictionary load <2s, lookup <200ms, popup render <100ms, memory <50MB
-**Constraints**: Offline after initial dictionary download, must not block main thread during dictionary loading
+**Constraints**: Offline after initial dictionary download, dictionary loading deferred to `onLayoutReady()` to avoid blocking Obsidian startup
 **Scale/Scope**: Single plugin, ~124K dictionary entries, 8 settings fields
 
 ## Constitution Check
