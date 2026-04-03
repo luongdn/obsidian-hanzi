@@ -27,10 +27,10 @@ jobs:
 
       - name: Package zip for manual install
         run: |
-          mkdir -p obsidian-hanzi/assets
-          cp main.js manifest.json styles.css obsidian-hanzi/
-          cp assets/cedict_ts.u8 obsidian-hanzi/assets/
-          zip -r obsidian-hanzi-${{ github.ref_name }}.zip obsidian-hanzi
+          mkdir -p hanzi-lookup/assets
+          cp main.js manifest.json styles.css hanzi-lookup/
+          cp assets/cedict_ts.u8 hanzi-lookup/assets/
+          zip -r hanzi-lookup-${{ github.ref_name }}.zip hanzi-lookup
 
       - uses: softprops/action-gh-release@v2
         with:
@@ -39,4 +39,4 @@ jobs:
             manifest.json
             styles.css
             assets/cedict_ts.u8
-            obsidian-hanzi-${{ github.ref_name }}.zip
+            hanzi-lookup-${{ github.ref_name }}.zip

@@ -49,13 +49,13 @@ On first launch, the plugin downloads the CC-CEDICT dictionary file (~4 MB) from
 ### From Obsidian Community Plugins
 
 1. Open **Settings → Community plugins → Browse**
-2. Search for **Hanzi**
+2. Search for **Hanzi Lookup**
 3. Click **Install**, then **Enable**
 
 ### Manual Installation
 
-1. Download `obsidian-hanzi-<version>.zip` from the [Releases](https://github.com/luongdn/obsidian-hanzi/releases) page
-2. Extract the zip into your vault's `.obsidian/plugins/` directory (this creates the `obsidian-hanzi/` folder with all required files)
+1. Download `hanzi-lookup-<version>.zip` from the [Releases](https://github.com/luongdn/obsidian-hanzi/releases) page
+2. Extract the zip into your vault's `.obsidian/plugins/` directory (this creates the `hanzi-lookup/` folder with all required files)
 3. Reload Obsidian and enable the plugin in **Settings → Community plugins**
 
 ## Building from Source
@@ -65,7 +65,7 @@ npm install
 npm run build
 ```
 
-Copy `main.js`, `manifest.json`, `styles.css`, and `assets/` to your vault's plugin directory.
+Create a `hanzi-lookup/` folder inside your vault's `.obsidian/plugins/` directory, then copy `main.js`, `manifest.json`, `styles.css`, and `assets/` into it.
 
 ## AI Disclosure
 
