@@ -1,6 +1,6 @@
 {
   "id": "obsidian-hanzi",
-  "name": "Obsidian Hanzi",
+  "name": "Hanzi Lookup",
   "version": "1.0.2",
   "minAppVersion": "1.5.0",
   "description": "Offline Chinese-English dictionary lookup using CC-CEDICT. Hover over any Chinese character to see Traditional/Simplified forms, pinyin, and definitions.",
