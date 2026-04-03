@@ -38,7 +38,6 @@ export default class HanziPlugin extends Plugin {
       const dictPath = normalizePath(`${dir}/assets/cedict_ts.u8`);
       const content = await this.loadDictionary(dictPath);
       this.dictIndex = new DictionaryIndexImpl(content);
-      console.log(`[Hanzi] Dictionary loaded: ${this.dictIndex.size} entries`);
       this.refreshExtensions();
       this.refreshReadingMode();
     } catch (e) {

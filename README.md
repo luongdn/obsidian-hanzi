@@ -40,6 +40,10 @@ Switch between modes using the command palette:
 | Popup font size | Size of popup text (8–32px) | 12px |
 | Max look-ahead | Characters to scan for word match (1–12) | 8 |
 
+## Network use
+
+On first launch, the plugin downloads the CC-CEDICT dictionary file (~4 MB) from the plugin's [GitHub Releases](https://github.com/luongdn/obsidian-hanzi/releases) page using Obsidian's built-in `requestUrl` API. The file is cached locally in the plugin's `assets/` directory. After this one-time download, all lookups are fully offline - no further network requests are made.
+
 ## Installation
 
 ### From Obsidian Community Plugins
